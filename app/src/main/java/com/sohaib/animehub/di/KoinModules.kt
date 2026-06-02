@@ -8,6 +8,7 @@ import com.sohaib.animehub.data.di.repositoriesModule
 import com.sohaib.animehub.domain.di.domainModule
 import com.sohaib.animehub.feature.anime.details.di.animeDetailsFeatureModule
 import com.sohaib.animehub.feature.home.di.homeFeatureModule
+import com.sohaib.animehub.feature.settings.di.settingFeatureModule
 import com.sohaib.animehub.feature.splash.di.splashFeatureModule
 
 class KoinModules {
@@ -28,6 +29,7 @@ class KoinModules {
         splashFeatureModule,
         homeFeatureModule,
         animeDetailsFeatureModule,
+        settingFeatureModule,
     )
 
     val list = coreList + dataList + domainList + featureList

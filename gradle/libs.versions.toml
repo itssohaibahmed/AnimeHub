@@ -1,7 +1,7 @@
 [versions]
 # Plugins
-agp = "9.1.1"
-kotlin = "2.3.20"
+agp = "9.2.1"
+kotlin = "2.3.21"
 ksp = "2.3.6"
 
 # AndroidX Core
@@ -12,7 +12,7 @@ activityCompose = "1.13.0"
 lifecycleRuntimeKtx = "2.10.0"
 
 # Compose
-composeBom = "2026.04.01"
+composeBom = "2026.05.01"
 
 # Compose Navigation
 navigationCompose = "2.9.8"
@@ -30,6 +30,9 @@ moshi = "1.15.2"
 
 # Room Database
 room = "2.8.4"
+
+# DataStore
+dataStore = "1.2.1"
 
 # Koin
 koinBom = "4.2.1"
@@ -86,6 +89,9 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "room" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+
+# DataStore
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "dataStore" }
 
 # Koin
 koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koinBom" }

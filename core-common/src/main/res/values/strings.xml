@@ -14,7 +14,47 @@
     <string name="retry">Retry</string>
     <string name="navigate_back">Navigate Back</string>
     <string name="episodes_count">Episodes: %1$d</string>
+
     <string name="setting_screen_title">Setting Screen</string>
+    <string name="settings_screen_title">Settings</string>
     <string name="favourites_screen_title">Favourites Screen</string>
+    <string name="settings_dark_mode">Dark mode</string>
+    <string name="settings_dark_mode_subtitle">Use a dark color palette for low-light viewing</string>
+    <string name="settings_notifications">Notifications</string>
+    <string name="settings_notifications_subtitle">Get alerts for new episodes and recommendations</string>
+    <string name="settings_autoplay">Auto-play trailers</string>
+    <string name="settings_autoplay_subtitle">Play short previews automatically on cards</string>
+    <string name="settings_theme_mode">Theme mode</string>
+    <string name="settings_notification_frequency">Notification frequency</string>
+    <string name="settings_data_saver">Data saver</string>
+    <string name="settings_data_saver_value">%1$d%% media quality</string>
+    <string name="settings_section_preferences">Preferences</string>
+    <string name="settings_section_storage">Storage</string>
+    <string name="settings_cached_images">Cached images</string>
+    <string name="settings_cache_size_mb">%1$d MB</string>
+    <string name="settings_clearing_cache">Clearing cache…</string>
+    <string name="settings_action_clear_cache">Clear cache</string>
+    <string name="settings_action_clear">Clear</string>
+    <string name="settings_action_cancel">Cancel</string>
+    <string name="settings_restore_defaults">Restore defaults</string>
+    <string name="settings_clear_cache_title">Clear cached images?</string>
+    <string name="settings_clear_cache_message">This removes local image cache to free storage. It can be re-downloaded automatically.</string>
+    <string name="settings_section_appearance">Appearance</string>
+    <string name="settings_section_support">Support</string>
+    <string name="settings_section_about">About us</string>
+    <string name="settings_theme_system">System</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_rate_app">Rate App</string>
+    <string name="settings_rate_app_subtitle">Help us improve by rating your app experience</string>
+    <string name="settings_feedback">Feedback</string>
+    <string name="settings_feedback_subtitle">Share bugs, ideas, and feature requests</string>
+    <string name="settings_share_app">Share App</string>
+    <string name="settings_share_app_subtitle">Invite friends to discover AnimeHub</string>
+    <string name="settings_action_open">Open</string>
+    <string name="settings_about_title">Sohaib Ahmed</string>
+    <string name="settings_about_body">Senior Android Engineer and Technical Lead building scalable Android apps with clean architecture and modern Kotlin tooling. Based in Islamabad, Pakistan.</string>
+    <string name="settings_about_github">GitHub: github.com/itssohaibahmed</string>
+    <string name="settings_about_linkedin">LinkedIn: linkedin.com/in/itssohaibahmed</string>
 
 </resources>

@@ -45,9 +45,13 @@ dependencies {
     implementation(libs.androidx.paging.common)
     implementation(libs.androidx.paging.runtime)
 
+    // DataStore
+    implementation(libs.androidx.datastore.preferences)
+
     // Koin
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.core)
+    implementation(libs.koin.android)
 
     // Testing
     testImplementation(libs.junit)
