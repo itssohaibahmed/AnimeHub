@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Button
@@ -155,25 +156,34 @@ private fun HomeSuccessContent(
     onCardClick: (String) -> Unit,
     onRefresh: () -> Unit,
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        PullToRefreshBox(
-            isRefreshing = isRefreshing,
-            onRefresh = onRefresh,
-            modifier = Modifier.fillMaxSize(),
-            indicator = {},
-        ) {
-            HomeAnimeGrid(
-                pagingItems = pagingItems,
-                onCardClick = onCardClick,
-            )
-        }
+    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+        val loadMoreBarHeight = 56.dp
+        val gridHeight = if (isLoadingMore) maxHeight - loadMoreBarHeight else maxHeight
 
-        if (isLoadingMore) {
-            CircularProgressIndicator(
+        Column(modifier = Modifier.fillMaxSize()) {
+            PullToRefreshBox(
+                isRefreshing = isRefreshing,
+                onRefresh = onRefresh,
                 modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(16.dp),
-            )
+                    .fillMaxWidth()
+                    .height(gridHeight),
+            ) {
+                HomeAnimeGrid(
+                    pagingItems = pagingItems,
+                    onCardClick = onCardClick,
+                )
+            }
+
+            if (isLoadingMore) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(loadMoreBarHeight),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
         }
     }
 }
@@ -194,8 +204,17 @@ private fun HomeAnimeGrid(
             count = pagingItems.itemCount,
             key = pagingItems.itemKey { it.id },
         ) { index ->
-            val anime = pagingItems[index] ?: return@items
-            AnimeItem(anime = anime, onCardClick = onCardClick)
+            val anime = pagingItems[index]
+            if (anime == null) {
+                // Keep grid slot so order matches DB; do not skip with return@items.
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1f),
+                )
+            } else {
+                AnimeItem(anime = anime, onCardClick = onCardClick)
+            }
         }
     }
 }

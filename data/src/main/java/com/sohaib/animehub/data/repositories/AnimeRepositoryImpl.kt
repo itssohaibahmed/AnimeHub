@@ -10,7 +10,6 @@ import com.sohaib.animehub.data.dataSources.remote.AnimeRemoteDataSource
 import com.sohaib.animehub.data.mapper.toDomain
 import com.sohaib.animehub.data.mapper.toEntity
 import com.sohaib.animehub.data.paging.AnimePagingConfig
-import com.sohaib.animehub.data.paging.AnimePagingSource
 import com.sohaib.animehub.data.paging.AnimeRemoteMediator
 import com.sohaib.animehub.domain.errors.DomainError
 import com.sohaib.animehub.domain.models.Anime
@@ -33,7 +32,7 @@ class AnimeRepositoryImpl(
         return Pager(
             config = PagingConfig(
                 pageSize = AnimePagingConfig.PAGE_SIZE,
-                initialLoadSize = AnimePagingConfig.PAGE_SIZE * 3,
+                initialLoadSize = AnimePagingConfig.PAGE_SIZE * 1,
                 prefetchDistance = AnimePagingConfig.PREFETCH_DISTANCE,
                 enablePlaceholders = false,
             ),
@@ -41,7 +40,7 @@ class AnimeRepositoryImpl(
                 localDataSource = localDataSource,
                 remoteDataSource = remoteDataSource,
             ),
-            pagingSourceFactory = { AnimePagingSource(localDataSource).create() },
+            pagingSourceFactory = { localDataSource.getAnimePagingSource() },
         ).flow.map { pagingData ->
             pagingData.map { entity -> entity.toDomain() }
         }

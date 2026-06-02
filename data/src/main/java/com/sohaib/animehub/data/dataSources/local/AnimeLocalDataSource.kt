@@ -7,21 +7,24 @@ import com.sohaib.animehub.core.database.entities.AnimeRemoteKeysEntity
 import kotlinx.coroutines.flow.Flow
 
 class AnimeLocalDataSource(
-    private val database: AppDatabase,
+    private val appDatabase: AppDatabase,
 ) {
 
-    private val animeDao get() = database.animeDao()
-    private val remoteKeysDao get() = database.animeRemoteKeysDao()
+    private val animeDao get() = appDatabase.animeDao()
+    private val remoteKeysDao get() = appDatabase.animeRemoteKeysDao()
 
     /* ------------------------------------------ AnimeDao ------------------------------------------ */
 
-    fun getAnimeDetails(animeId: String): Flow<AnimeEntity?> = animeDao.getAnimeById(animeId = animeId)
-
+    /** Get items page by page in chunks **/
     fun getAnimePagingSource() = animeDao.getAnimePagingSource()
 
-    suspend fun getAnimeCount(): Int = animeDao.getAnimeCount()
+    /** Get item detail **/
+    fun getAnimeDetails(animeId: String): Flow<AnimeEntity?> = animeDao.getAnimeById(animeId = animeId)
 
+    /** Update if exist else add detail of item **/
     suspend fun upsertDetail(anime: AnimeEntity) = animeDao.upsertAnime(anime)
+
+    suspend fun getAnimeCount(): Int = animeDao.getAnimeCount()
 
     /**
      * Applies one remote page atomically:
@@ -36,21 +39,14 @@ class AnimeLocalDataSource(
         entities: List<AnimeEntity>,
         nextOffset: Int?,
     ) {
-        database.withTransaction {
+        appDatabase.withTransaction {
             if (isRefresh) {
                 animeDao.clearAll()
                 remoteKeysDao.clearAll()
             }
 
             if (entities.isNotEmpty()) {
-                animeDao.insertIgnore(entities)
-                entities.forEach { entity ->
-                    animeDao.updateListFields(
-                        id = entity.id,
-                        title = entity.title,
-                        posterImageLargeUrl = entity.posterImageLargeUrl,
-                    )
-                }
+                animeDao.upsertAll(entities)
             }
 
             remoteKeysDao.insertRemoteKeys(

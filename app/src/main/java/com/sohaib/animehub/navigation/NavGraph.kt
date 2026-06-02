@@ -30,8 +30,10 @@ fun NavGraph(modifier: Modifier = Modifier) {
         navController = navController,
         startDestination = SPLASH_ROUTE,
         modifier = modifier.fillMaxSize(),
-        enterTransition = { slideInHorizontally { -it } },
-        exitTransition = { slideOutHorizontally { it } }
+        enterTransition = { slideInHorizontally { it } },
+        exitTransition = { slideOutHorizontally { -it } },
+        popEnterTransition = { slideInHorizontally { -it } },
+        popExitTransition = { slideOutHorizontally { it } }
     ) {
 
         composable(

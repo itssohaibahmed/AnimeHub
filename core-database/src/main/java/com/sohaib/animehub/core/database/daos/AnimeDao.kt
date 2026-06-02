@@ -2,8 +2,6 @@ package com.sohaib.animehub.core.database.daos
 
 import androidx.paging.PagingSource
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.RoomWarnings
 import androidx.room.Upsert
@@ -16,31 +14,25 @@ interface AnimeDao {
     /* -------------------------------- Reading Data -------------------------------- */
 
     @SuppressWarnings(RoomWarnings.QUERY_MISMATCH)
-    @Query("SELECT id, title, posterImageLargeUrl FROM table_anime ORDER BY id ASC")
+    @Query("SELECT id, title, posterImageLargeUrl FROM table_anime")
     fun getAnimePagingSource(): PagingSource<Int, AnimeEntity>
-
-    @Query("SELECT COUNT(*) FROM table_anime")
-    suspend fun getAnimeCount(): Int
 
     @Query("SELECT * FROM table_anime WHERE id = :animeId")
     fun getAnimeById(animeId: String): Flow<AnimeEntity?>
+
+    @Upsert
+    suspend fun upsertAnime(anime: AnimeEntity)
+
+    @Query("SELECT COUNT(*) FROM table_anime")
+    suspend fun getAnimeCount(): Int
 
     @Query("SELECT * FROM table_anime WHERE id IN (:animeIds)")
     suspend fun getAnimeByIds(animeIds: List<String>): List<AnimeEntity>
 
     /* -------------------------------- Writing Data -------------------------------- */
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertIgnore(list: List<AnimeEntity>): List<Long>
-
-    @Query("""UPDATE table_anime SET title = :title, posterImageLargeUrl = :posterImageLargeUrl WHERE id = :id """)
-    suspend fun updateListFields(id: String, title: String, posterImageLargeUrl: String)
-
     @Upsert
-    suspend fun upsertAnime(anime: AnimeEntity)
-
-    @Query("DELETE FROM table_anime WHERE id NOT IN (:ids)")
-    suspend fun deleteNotIn(ids: List<String>)
+    suspend fun upsertAll(items: List<AnimeEntity>)
 
     @Query("DELETE FROM table_anime")
     suspend fun clearAll()
