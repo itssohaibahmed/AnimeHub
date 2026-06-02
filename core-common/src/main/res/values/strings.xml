@@ -56,5 +56,8 @@
     <string name="settings_about_body">Senior Android Engineer and Technical Lead building scalable Android apps with clean architecture and modern Kotlin tooling. Based in Islamabad, Pakistan.</string>
     <string name="settings_about_github">GitHub: github.com/itssohaibahmed</string>
     <string name="settings_about_linkedin">LinkedIn: linkedin.com/in/itssohaibahmed</string>
+    <string name="add_to_favourites">Add to favourites</string>
+    <string name="remove_from_favourites">Remove from favourites</string>
+    <string name="no_favourites_found">No favourites found yet.</string>
 
 </resources>

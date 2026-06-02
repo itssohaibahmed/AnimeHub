@@ -17,6 +17,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -24,6 +26,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -32,6 +36,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
@@ -52,6 +59,7 @@ fun HomeScreen(
     onNavigateToDetailPage: (String) -> Unit,
 ) {
     val pagingItems = viewModel.animePagingFlow.collectAsLazyPagingItems()
+    val favouriteAnimeIds by viewModel.favouriteAnimeIds.collectAsState()
 
     LaunchedEffect(viewModel) {
         viewModel.effect.collect { effect ->
@@ -66,6 +74,8 @@ fun HomeScreen(
         modifier = modifier,
         pagingItems = pagingItems,
         onCardClick = { viewModel.handleIntent(HomeIntent.OnItemClick(it)) },
+        onFavouriteClick = { viewModel.handleIntent(HomeIntent.ToggleFavourite(it)) },
+        favouriteAnimeIds = favouriteAnimeIds,
         onRefresh = { viewModel.handleIntent(HomeIntent.Refresh) },
         onRetryClicked = { viewModel.handleIntent(HomeIntent.Refresh) },
     )
@@ -76,6 +86,8 @@ private fun HomeScreenContent(
     modifier: Modifier = Modifier,
     pagingItems: LazyPagingItems<Anime>,
     onCardClick: (String) -> Unit,
+    onFavouriteClick: (String) -> Unit,
+    favouriteAnimeIds: Set<String>,
     onRefresh: () -> Unit,
     onRetryClicked: () -> Unit,
 ) {
@@ -91,6 +103,8 @@ private fun HomeScreenContent(
                 isRefreshing = uiState.isRefreshing,
                 isLoadingMore = uiState.isLoadingMore,
                 onCardClick = onCardClick,
+                onFavouriteClick = onFavouriteClick,
+                favouriteAnimeIds = favouriteAnimeIds,
                 onRefresh = onRefresh,
             )
         }
@@ -154,6 +168,8 @@ private fun HomeSuccessContent(
     isRefreshing: Boolean,
     isLoadingMore: Boolean,
     onCardClick: (String) -> Unit,
+    onFavouriteClick: (String) -> Unit,
+    favouriteAnimeIds: Set<String>,
     onRefresh: () -> Unit,
 ) {
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
@@ -171,6 +187,8 @@ private fun HomeSuccessContent(
                 HomeAnimeGrid(
                     pagingItems = pagingItems,
                     onCardClick = onCardClick,
+                    onFavouriteClick = onFavouriteClick,
+                    favouriteAnimeIds = favouriteAnimeIds,
                 )
             }
 
@@ -192,6 +210,8 @@ private fun HomeSuccessContent(
 private fun HomeAnimeGrid(
     pagingItems: LazyPagingItems<Anime>,
     onCardClick: (String) -> Unit,
+    onFavouriteClick: (String) -> Unit,
+    favouriteAnimeIds: Set<String>,
 ) {
     LazyVerticalGrid(
         modifier = Modifier.fillMaxSize(),
@@ -213,7 +233,12 @@ private fun HomeAnimeGrid(
                         .aspectRatio(1f),
                 )
             } else {
-                AnimeItem(anime = anime, onCardClick = onCardClick)
+                AnimeItem(
+                    anime = anime,
+                    onCardClick = onCardClick,
+                    isFavourite = favouriteAnimeIds.contains(anime.id),
+                    onFavouriteClick = onFavouriteClick,
+                )
             }
         }
     }
@@ -224,6 +249,8 @@ fun AnimeItem(
     modifier: Modifier = Modifier,
     anime: Anime,
     onCardClick: (String) -> Unit,
+    isFavourite: Boolean,
+    onFavouriteClick: (String) -> Unit,
 ) {
     OutlinedCard(
         modifier = modifier
@@ -238,6 +265,20 @@ fun AnimeItem(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize(),
             )
+            IconButton(
+                onClick = { onFavouriteClick(anime.id) },
+                modifier = Modifier.align(Alignment.TopEnd),
+            ) {
+                Icon(
+                    imageVector = if (isFavourite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
+                    contentDescription = if (isFavourite) {
+                        stringResource(commonR.string.remove_from_favourites)
+                    } else {
+                        stringResource(commonR.string.add_to_favourites)
+                    },
+                    tint = MaterialTheme.colorScheme.primary,
+                )
+            }
             Text(
                 text = anime.title,
                 style = MaterialTheme.typography.bodySmall,
@@ -260,5 +301,7 @@ private fun HomeScreenPrev() {
     AnimeItem(
         anime = Anime(id = "1", title = "Naruto", imageUrl = ""),
         onCardClick = {},
+        isFavourite = false,
+        onFavouriteClick = {},
     )
 }

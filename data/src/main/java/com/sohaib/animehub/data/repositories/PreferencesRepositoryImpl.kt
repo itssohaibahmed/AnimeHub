@@ -12,7 +12,13 @@ class PreferencesRepositoryImpl(private val localDataSource: PreferencesLocalDat
         ThemeMode.entries.firstOrNull { it.name == raw } ?: ThemeMode.SYSTEM
     }
 
+    override val favouriteAnimeIds: Flow<Set<String>> = localDataSource.observeFavouriteAnimeIds()
+
     override suspend fun setThemeMode(themeMode: ThemeMode) {
         localDataSource.setThemeModeRaw(themeMode.name)
+    }
+
+    override suspend fun toggleFavouriteAnimeId(animeId: String) {
+        localDataSource.toggleFavouriteAnimeId(animeId = animeId)
     }
 }

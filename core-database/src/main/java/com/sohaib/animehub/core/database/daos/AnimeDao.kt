@@ -29,6 +29,10 @@ interface AnimeDao {
     @Query("SELECT * FROM table_anime WHERE id IN (:animeIds)")
     suspend fun getAnimeByIds(animeIds: List<String>): List<AnimeEntity>
 
+    @SuppressWarnings(RoomWarnings.QUERY_MISMATCH)
+    @Query("SELECT id, title, posterImageLargeUrl FROM table_anime WHERE id IN (:animeIds)")
+    fun observeAnimeByIds(animeIds: List<String>): Flow<List<AnimeEntity>>
+
     /* -------------------------------- Writing Data -------------------------------- */
 
     @Upsert
