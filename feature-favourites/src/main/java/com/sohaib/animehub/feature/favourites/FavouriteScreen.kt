@@ -12,21 +12,21 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Favorite
-import androidx.compose.material3.Text
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.sohaib.animehub.domain.models.Anime
 import com.sohaib.animehub.feature.favourites.intent.FavouriteIntent
@@ -34,14 +34,13 @@ import com.sohaib.animehub.feature.favourites.viewModel.FavouriteViewModel
 import org.koin.androidx.compose.koinViewModel
 import com.sohaib.animehub.core.common.R as commonR
 
-const val FAVOURITE_ROUTE = "favourites"
-
 @Composable
 fun FavouriteScreen(
     modifier: Modifier = Modifier,
     viewModel: FavouriteViewModel = koinViewModel(),
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
     if (state.favouriteAnimeList.isEmpty()) {
         Box(
             modifier = modifier

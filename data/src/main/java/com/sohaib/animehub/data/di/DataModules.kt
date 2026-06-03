@@ -13,7 +13,7 @@ import org.koin.dsl.lazyModule
 val dataSourceModule = lazyModule {
     // Local DataSource
     single { AnimeLocalDataSource(get()) }
-    single { PreferencesLocalDataSource(androidContext()) }
+    single { PreferencesLocalDataSource(androidContext(), get()) }
 
     // Remote DataSource
     single { AnimeRemoteDataSource(get()) }
