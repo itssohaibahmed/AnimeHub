@@ -15,7 +15,7 @@ A modern **anime discovery** Android app powered by the [Kitsu API](https://kits
 <p align="center">
   <img src="screenshots/screenshot_home_screen.png" alt="Home feed with anime grid and favourite toggles" width="350" />
   <img src="screenshots/screenshot_favourite_screen.png" alt="Favourites screen with saved anime" width="350" />
-  <img src="screenshots/details.png" alt="Anime details with synopsis and favourite toggle" width="350" />
+  <img src="screenshots/screenshot_detail_screen.png" alt="Anime details with synopsis and favourite toggle" width="350" />
 </p>
 
 - **Home feed** — Paging 3 infinite scroll, pull-to-refresh, offline Room cache, favourite toggle on each card
