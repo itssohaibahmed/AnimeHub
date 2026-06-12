@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -95,7 +96,7 @@ private fun FavouriteAnimeItem(
                 Icon(
                     imageVector = Icons.Rounded.Favorite,
                     contentDescription = stringResource(commonR.string.remove_from_favourites),
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = Color.Red,
                 )
             }
             Text(

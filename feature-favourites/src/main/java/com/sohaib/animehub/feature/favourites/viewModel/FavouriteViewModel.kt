@@ -20,6 +20,10 @@ class FavouriteViewModel(
     private val _state = MutableStateFlow(FavouriteState())
     val state: StateFlow<FavouriteState> = _state.asStateFlow()
 
+    init {
+        handleIntent(FavouriteIntent.GetFavouriteList)
+    }
+
     fun handleIntent(intent: FavouriteIntent) = viewModelScope.launch {
         when (intent) {
             is FavouriteIntent.GetFavouriteList -> observeFavouriteList()
