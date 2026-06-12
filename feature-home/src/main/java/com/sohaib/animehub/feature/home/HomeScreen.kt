@@ -279,7 +279,7 @@ fun AnimeItem(
                     } else {
                         stringResource(commonR.string.add_to_favourites)
                     },
-                    tint = Color.Red,
+                    tint = if (isFavourite) Color.Red else Color.White,
                 )
             }
             Text(
