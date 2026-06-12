@@ -188,7 +188,7 @@ private fun AnimeDetailsSuccessState(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         AsyncImage(
             model = animeDetail.coverImageLargeUrl.ifBlank { animeDetail.posterImageLargeUrl },
@@ -217,19 +217,6 @@ private fun AnimeDetailsSuccessState(
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
-        if (animeDetail.description.isNotBlank()) {
-            Text(
-                text = stringResource(commonR.string.anime_synopsis),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(horizontal = 16.dp),
-            )
-            Text(
-                text = animeDetail.description,
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(horizontal = 16.dp),
-            )
-        }
         if (animeDetail.youtubeVideoId.isNotBlank()) {
             TextButton(
                 onClick = { uriHandler.openUri("https://www.youtube.com/watch?v=${animeDetail.youtubeVideoId}") },
@@ -243,6 +230,19 @@ private fun AnimeDetailsSuccessState(
                 text = stringResource(commonR.string.anime_last_updated, animeDetail.updatedAt),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
+        }
+        if (animeDetail.description.isNotBlank()) {
+            Text(
+                text = stringResource(commonR.string.anime_synopsis),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
+            Text(
+                text = animeDetail.description,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .padding(bottom = 40.dp),
