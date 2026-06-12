@@ -19,4 +19,5 @@ val coreDatabaseModule = lazyModule {
 
     single { get<AppDatabase>().animeDao() }
     single { get<AppDatabase>().animeRemoteKeysDao() }
+    single { get<AppDatabase>().favouriteAnimeDao() }
 }

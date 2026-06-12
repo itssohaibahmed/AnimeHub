@@ -1,6 +1,7 @@
 package com.sohaib.animehub.data.mapper
 
 import com.sohaib.animehub.core.database.entities.AnimeEntity
+import com.sohaib.animehub.core.database.entities.FavouriteAnimeEntity
 import com.sohaib.animehub.core.network.models.AnimeDTO
 import com.sohaib.animehub.core.network.models.AnimeDetailDTO
 import com.sohaib.animehub.domain.models.Anime
@@ -15,6 +16,21 @@ fun AnimeEntity.toDomain(): Anime = Anime(
 )
 
 fun List<AnimeEntity>.toDomain(): List<Anime> = map { it.toDomain() }
+
+fun FavouriteAnimeEntity.toDomain(): Anime = Anime(
+    id = id,
+    title = title,
+    imageUrl = posterImageLargeUrl,
+)
+
+fun List<FavouriteAnimeEntity>.toFavouriteDomain(): List<Anime> = map { it.toDomain() }
+
+fun Anime.toFavouriteEntity(): FavouriteAnimeEntity = FavouriteAnimeEntity(
+    id = id,
+    title = title,
+    posterImageLargeUrl = imageUrl,
+    savedAt = System.currentTimeMillis(),
+)
 
 
 fun AnimeEntity?.toDomain(): AnimeDetail? {

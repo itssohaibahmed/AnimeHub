@@ -26,8 +26,6 @@ class AnimeLocalDataSource(
 
     suspend fun getAnimeCount(): Int = animeDao.getAnimeCount()
 
-    fun observeAnimeByIds(animeIds: List<String>): Flow<List<AnimeEntity>> = animeDao.observeAnimeByIds(animeIds = animeIds)
-
     /**
      * Applies one remote page atomically:
      * - optional cache clear on refresh

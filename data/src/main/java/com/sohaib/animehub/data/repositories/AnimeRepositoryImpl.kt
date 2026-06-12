@@ -46,13 +46,6 @@ class AnimeRepositoryImpl(
         }
     }
 
-    override fun observeAnimeByIds(animeIds: List<String>): Flow<List<Anime>> =
-        localDataSource.observeAnimeByIds(animeIds = animeIds)
-            .map { entities ->
-                entities.toDomain()
-                    .sortedBy { anime -> animeIds.indexOf(anime.id).takeIf { it >= 0 } ?: Int.MAX_VALUE }
-            }
-
     override fun getAnimeDetails(animeId: String): Flow<AnimeDetail?> = localDataSource.getAnimeDetails(animeId = animeId).map { it.toDomain() }
 
     override suspend fun refreshAnimeDetailById(animeId: String): Unit = withContext(ioDispatchers) {

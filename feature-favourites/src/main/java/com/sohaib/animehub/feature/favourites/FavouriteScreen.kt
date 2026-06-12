@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material3.Icon
@@ -35,10 +36,13 @@ import com.sohaib.animehub.feature.favourites.viewModel.FavouriteViewModel
 import org.koin.androidx.compose.koinViewModel
 import com.sohaib.animehub.core.common.R as commonR
 
+const val FAVOURITE_ROUTE = "favourites"
+
 @Composable
 fun FavouriteScreen(
     modifier: Modifier = Modifier,
     viewModel: FavouriteViewModel = koinViewModel(),
+    onNavigateToDetailPage: (String) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -62,10 +66,14 @@ fun FavouriteScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            items(state.favouriteAnimeList.size) { index ->
+            items(
+                items = state.favouriteAnimeList,
+                key = { it.id },
+            ) { anime ->
                 FavouriteAnimeItem(
-                    anime = state.favouriteAnimeList[index],
-                    onFavouriteClick = { viewModel.handleIntent(FavouriteIntent.ToggleFavourite(it)) },
+                    anime = anime,
+                    onCardClick = { onNavigateToDetailPage(anime.id) },
+                    onFavouriteClick = { viewModel.handleIntent(FavouriteIntent.ToggleFavourite(anime)) },
                 )
             }
         }
@@ -75,12 +83,14 @@ fun FavouriteScreen(
 @Composable
 private fun FavouriteAnimeItem(
     anime: Anime,
-    onFavouriteClick: (String) -> Unit,
+    onCardClick: () -> Unit,
+    onFavouriteClick: () -> Unit,
 ) {
     OutlinedCard(
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(1f),
+        onClick = onCardClick,
     ) {
         Box {
             AsyncImage(
@@ -90,7 +100,7 @@ private fun FavouriteAnimeItem(
                 modifier = Modifier.fillMaxSize(),
             )
             IconButton(
-                onClick = { onFavouriteClick(anime.id) },
+                onClick = onFavouriteClick,
                 modifier = Modifier.align(Alignment.TopEnd),
             ) {
                 Icon(

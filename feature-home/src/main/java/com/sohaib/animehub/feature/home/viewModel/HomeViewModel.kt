@@ -41,7 +41,7 @@ class HomeViewModel(
         when (intent) {
             HomeIntent.Refresh -> _effect.emit(HomeEffect.RefreshAnimeList)
             is HomeIntent.OnItemClick -> _effect.emit(HomeEffect.NavigateToDetailPage(intent.animeId))
-            is HomeIntent.ToggleFavourite -> toggleFavouriteAnimeUseCase(intent.animeId)
+            is HomeIntent.ToggleFavourite -> toggleFavouriteAnimeUseCase(intent.anime)
         }
     }
 }

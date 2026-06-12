@@ -6,6 +6,7 @@ data class AnimeDetailsState(
     val uiState: AnimeDetailsUiState = AnimeDetailsUiState.Loading,
     val isRefreshing: Boolean = false,
     val hasCompletedInitialSync: Boolean = false,
+    val isFavourite: Boolean = false,
 )
 
 sealed interface AnimeDetailsUiState {

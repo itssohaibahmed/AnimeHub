@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface AnimeRepository {
     fun getAnimeListPaging(): Flow<PagingData<Anime>>
-    fun observeAnimeByIds(animeIds: List<String>): Flow<List<Anime>>
     fun getAnimeDetails(animeId: String): Flow<AnimeDetail?>
     suspend fun refreshAnimeDetailById(animeId: String)
 }

@@ -59,7 +59,13 @@ fun NavGraph(modifier: Modifier = Modifier) {
                         }
                     )
                 },
-                favouriteContent = { FavouriteScreen() },
+                favouriteContent = {
+                    FavouriteScreen(
+                        onNavigateToDetailPage = {
+                            navController.navigate(createRouteAnimeDetails(it))
+                        },
+                    )
+                },
                 settingContent = { SettingScreen() }
             )
         }

@@ -27,7 +27,7 @@ class FavouriteViewModel(
     fun handleIntent(intent: FavouriteIntent) = viewModelScope.launch {
         when (intent) {
             is FavouriteIntent.GetFavouriteList -> observeFavouriteList()
-            is FavouriteIntent.ToggleFavourite -> toggleFavouriteAnimeUseCase(intent.animeId)
+            is FavouriteIntent.ToggleFavourite -> toggleFavouriteAnimeUseCase(intent.anime)
         }
     }
 

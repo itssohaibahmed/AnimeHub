@@ -14,5 +14,5 @@ val domainModule = lazyModule {
     factory { RefreshAnimeDetailsByIdUseCase(get()) }
     factory { ObserveFavouriteAnimeIdsUseCase(get()) }
     factory { ToggleFavouriteAnimeUseCase(get()) }
-    factory { GetFavouriteAnimeListUseCase(get(), get()) }
+    factory { GetFavouriteAnimeListUseCase(get()) }
 }

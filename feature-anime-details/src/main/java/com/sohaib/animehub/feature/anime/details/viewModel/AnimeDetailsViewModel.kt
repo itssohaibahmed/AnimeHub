@@ -5,8 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sohaib.animehub.core.common.constants.Constants.TAG
 import com.sohaib.animehub.domain.errors.DomainError
+import com.sohaib.animehub.domain.extensions.toAnime
 import com.sohaib.animehub.domain.useCases.GetAnimeDetailsByIdUseCase
+import com.sohaib.animehub.domain.useCases.ObserveFavouriteAnimeIdsUseCase
 import com.sohaib.animehub.domain.useCases.RefreshAnimeDetailsByIdUseCase
+import com.sohaib.animehub.domain.useCases.ToggleFavouriteAnimeUseCase
 import com.sohaib.animehub.feature.anime.details.effect.AnimeDetailsEffect
 import com.sohaib.animehub.feature.anime.details.intent.AnimeDetailsIntent
 import com.sohaib.animehub.feature.anime.details.state.AnimeDetailsState
@@ -30,6 +33,8 @@ import com.sohaib.animehub.core.common.R as commonR
 class AnimeDetailsViewModel(
     private val getUseCase: GetAnimeDetailsByIdUseCase,
     private val refreshUseCase: RefreshAnimeDetailsByIdUseCase,
+    private val observeFavouriteAnimeIdsUseCase: ObserveFavouriteAnimeIdsUseCase,
+    private val toggleFavouriteAnimeUseCase: ToggleFavouriteAnimeUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AnimeDetailsState())
@@ -43,12 +48,24 @@ class AnimeDetailsViewModel(
     }
 
     private var observeJob: Job? = null
+    private var favouriteJob: Job? = null
     private var currentAnimeId: String = ""
+
+    init {
+        favouriteJob = viewModelScope.launch {
+            observeFavouriteAnimeIdsUseCase().collect { favouriteIds ->
+                _state.update { current ->
+                    current.copy(isFavourite = currentAnimeId.isNotBlank() && favouriteIds.contains(currentAnimeId))
+                }
+            }
+        }
+    }
 
     fun handleIntent(intent: AnimeDetailsIntent) = viewModelScope.launch(coroutineExceptionHandler) {
         when (intent) {
             is AnimeDetailsIntent.GetData -> getData(intent.animeId)
             AnimeDetailsIntent.RefreshData -> refreshAnimeDetail(currentAnimeId)
+            AnimeDetailsIntent.ToggleFavourite -> toggleFavourite()
             AnimeDetailsIntent.OnNavigateBackClick -> _effect.emit(AnimeDetailsEffect.NavigateBack)
         }
     }
@@ -103,6 +120,11 @@ class AnimeDetailsViewModel(
         } finally {
             _state.update { it.copy(isRefreshing = false, hasCompletedInitialSync = true) }
         }
+    }
+
+    private suspend fun toggleFavourite() {
+        val animeDetail = (_state.value.uiState as? AnimeDetailsUiState.Success)?.animeDetail ?: return
+        toggleFavouriteAnimeUseCase(animeDetail.toAnime())
     }
 
     private fun handleError(throwable: Throwable) = viewModelScope.launch {

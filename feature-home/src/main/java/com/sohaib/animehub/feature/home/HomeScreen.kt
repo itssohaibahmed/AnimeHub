@@ -87,7 +87,7 @@ private fun HomeScreenContent(
     modifier: Modifier = Modifier,
     pagingItems: LazyPagingItems<Anime>,
     onCardClick: (String) -> Unit,
-    onFavouriteClick: (String) -> Unit,
+    onFavouriteClick: (Anime) -> Unit,
     favouriteAnimeIds: Set<String>,
     onRefresh: () -> Unit,
     onRetryClicked: () -> Unit,
@@ -171,7 +171,7 @@ private fun HomeSuccessContent(
     isRefreshing: Boolean,
     isLoadingMore: Boolean,
     onCardClick: (String) -> Unit,
-    onFavouriteClick: (String) -> Unit,
+    onFavouriteClick: (Anime) -> Unit,
     favouriteAnimeIds: Set<String>,
     onRefresh: () -> Unit,
 ) {
@@ -213,7 +213,7 @@ private fun HomeSuccessContent(
 private fun HomeAnimeGrid(
     pagingItems: LazyPagingItems<Anime>,
     onCardClick: (String) -> Unit,
-    onFavouriteClick: (String) -> Unit,
+    onFavouriteClick: (Anime) -> Unit,
     favouriteAnimeIds: Set<String>,
 ) {
     LazyVerticalGrid(
@@ -253,7 +253,7 @@ fun AnimeItem(
     anime: Anime,
     isFavourite: Boolean,
     onCardClick: (String) -> Unit,
-    onFavouriteClick: (String) -> Unit,
+    onFavouriteClick: (Anime) -> Unit,
 ) {
     OutlinedCard(
         modifier = modifier
@@ -269,7 +269,7 @@ fun AnimeItem(
                 modifier = Modifier.fillMaxSize(),
             )
             IconButton(
-                onClick = { onFavouriteClick(anime.id) },
+                onClick = { onFavouriteClick(anime) },
                 modifier = Modifier.align(Alignment.TopEnd),
             ) {
                 Icon(
